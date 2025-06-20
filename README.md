@@ -88,10 +88,11 @@ The model was evaluated using:
 - **Out-of-Domain Accuracy**: 100.0%
 
 **Model Testing Results:**
-✅ **In-Domain Queries**: Successfully answers flood-related questions with accurate, detailed responses  
-✅ **Out-of-Domain Detection**: Perfect rejection of non-flood queries with appropriate referrals  
-✅ **Hybrid System**: Combines rule-based responses with AI-generated answers for optimal performance  
-✅ **Real-time Performance**: Fast inference with consistent response quality
+
+**In-Domain Queries**: Successfully answers flood-related questions with accurate, detailed responses  
+**Out-of-Domain Detection**: Perfect rejection of non-flood queries with appropriate referrals  
+**Hybrid System**: Combines rule-based responses with AI-generated answers for optimal performance  
+**Real-time Performance**: Fast inference with consistent response quality
 
 The model successfully handles domain-specific queries while perfectly rejecting out-of-domain questions. The hybrid approach (rule-based + AI model) ensures reliable responses for flood-related queries and appropriate referrals for non-domain topics.
 
@@ -106,33 +107,34 @@ The chatbot is deployed as a Streamlit web application with a clean, intuitive i
 ## Installation and Usage
 
 1. Clone the repository
-```bash
+
 git clone https://github.com/username/floodsense-chatbot.git
+
 cd floodsense-chatbot
-```
+
 
 2. Install dependencies
-```bash
+
 pip install -r requirements.txt
-```
+
 
 Note: This project requires Python 3.8+ and TensorFlow 2.12.0.
 
-3. **Run the application (auto-setup on first run)**
-```bash
+3. **Run the application files step by step or (auto-setup on first run with streamlit)**
+
 streamlit run app.py
-```
+
 
 4. Open your browser and navigate to `http://localhost:8501`
 
-### 🚀 First Run Setup
+### First Run Setup
 **The chatbot will automatically:**
 - Generate the flood risk dataset (500+ Q&A pairs)
 - Train the T5 model (10-15 minutes)
 - Start the interface when ready
 
-### 📊 Manual Operations (Optional)
-```bash
+### Manual Operations (Optional)
+
 # Generate dataset only
 python generate_dataset.py
 
@@ -144,9 +146,8 @@ python evaluate_model.py
 
 # Test model responses
 python test_model.py
-```
 
-### ⚠️ Important Notes
+### Important Notes
 - **First run takes 10-15 minutes** for model training
 - **Subsequent runs start immediately**
 - Use `streamlit run app.py` (not `python app.py`)
@@ -154,7 +155,6 @@ python test_model.py
 
 ## Project Structure
 
-```
 floodrisk_chatbot/
 ├── data/                # Data files and processed datasets
 │   ├── processed/       # Processed training and validation data
@@ -174,7 +174,6 @@ floodrisk_chatbot/
 ├── train_model.py       # Model training script
 ├── requirements.txt     # Project dependencies
 └── README.md            # Project documentation
-```
 
 ## Example Conversations
 
@@ -212,9 +211,9 @@ floodrisk_chatbot/
 
 All core components have been tested and validated:
 
-✅ **Model Training**: Successfully trained T5 model with decreasing loss (8.54 → 0.72)  
-✅ **Model Evaluation**: Comprehensive metrics calculated using ROUGE, BLEU, and F1 scores  
-✅ **Inference Pipeline**: Real-time response generation working correctly  
-✅ **Domain Detection**: Perfect out-of-domain query handling (100% accuracy)  
-✅ **User Interface**: Streamlit app fully functional with all features  
-✅ **Data Pipeline**: Complete preprocessing and dataset handling
+**Model Training**: Successfully trained T5 model with decreasing loss (8.54 → 0.72)  
+**Model Evaluation**: Comprehensive metrics calculated using ROUGE, BLEU, and F1 scores  
+**Inference Pipeline**: Real-time response generation working correctly  
+**Domain Detection**: Perfect out-of-domain query handling (100% accuracy)  
+**User Interface**: Streamlit app fully functional with all features  
+**Data Pipeline**: Complete preprocessing and dataset handling
