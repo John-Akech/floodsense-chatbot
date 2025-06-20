@@ -1,0 +1,32 @@
+# Model files (too large for GitHub)
+models/
+*.h5
+*.bin
+*.safetensors
+checkpoint-*
+
+# Data files
+data/
+*.csv
+*.json
+
+# Chat history
+chat_history/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+venv/
+env/
+
+# OS files
+.DS_Store
+Thumbs.db
