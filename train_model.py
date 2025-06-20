@@ -34,8 +34,8 @@ from preprocess import preprocess_for_t5, load_qa_dataset
 
 # Constants
 MODEL_NAME = "t5-small"  # Using T5-small for efficiency
-MAX_INPUT_LENGTH = 512
-MAX_TARGET_LENGTH = 128
+MAX_INPUT_LENGTH = 256
+MAX_TARGET_LENGTH = 64
 MODEL_DIR = "models/fine_tuned_t5"
 DATASET_PATH = "data/qa_dataset.json"
 
@@ -97,8 +97,8 @@ def prepare_tf_dataset(dataset: Dataset, tokenizer: T5Tokenizer, batch_size: int
     return tf_dataset
 
 def train_model(train_dataset: Dataset, val_dataset: Dataset, 
-                learning_rate: float = 1e-5, batch_size: int = 8, 
-                num_epochs: int = 15) -> Tuple[Any, Any]:
+                learning_rate: float = 5e-5, batch_size: int = 2, 
+                num_epochs: int = 5) -> Tuple[Any, Any]:
     """
     Fine-tune the T5 model on the flood risk Q&A dataset using TensorFlow.
     
@@ -127,7 +127,8 @@ def train_model(train_dataset: Dataset, val_dataset: Dataset,
         learning_rate=learning_rate,
         beta_1=0.9,
         beta_2=0.999,
-        epsilon=1e-8
+        epsilon=1e-8,
+        clipnorm=1.0  # Gradient clipping
     )
     
     # Custom training loop
@@ -145,17 +146,27 @@ def train_model(train_dataset: Dataset, val_dataset: Dataset,
         num_batches = 0
         
         for batch in tf_train_dataset:
-            with tf.GradientTape() as tape:
-                outputs = model(
-                    input_ids=batch["input_ids"],
-                    attention_mask=batch["attention_mask"],
-                    labels=batch["labels"],
-                    training=True
-                )
-                loss = outputs.loss
-                
-            gradients = tape.gradient(loss, model.trainable_variables)
-            optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+            try:
+                with tf.GradientTape() as tape:
+                    outputs = model(
+                        input_ids=batch["input_ids"],
+                        attention_mask=batch["attention_mask"],
+                        labels=batch["labels"],
+                        training=True
+                    )
+                    loss = outputs.loss
+                    # Ensure loss is a scalar
+                    if len(loss.shape) > 0:
+                        loss = tf.reduce_mean(loss)
+                    
+                gradients = tape.gradient(loss, model.trainable_variables)
+                # Filter out None gradients
+                gradients = [g if g is not None else tf.zeros_like(v) 
+                           for g, v in zip(gradients, model.trainable_variables)]
+                optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+            except Exception as e:
+                logger.warning(f"Batch training error: {e}. Skipping batch.")
+                continue
             
             epoch_loss += loss.numpy()
             num_batches += 1
@@ -171,14 +182,18 @@ def train_model(train_dataset: Dataset, val_dataset: Dataset,
         num_val_batches = 0
         
         for batch in tf_val_dataset:
-            outputs = model(
-                input_ids=batch["input_ids"],
-                attention_mask=batch["attention_mask"],
-                labels=batch["labels"],
-                training=False
-            )
-            val_loss += outputs.loss.numpy()
-            num_val_batches += 1
+            try:
+                outputs = model(
+                    input_ids=batch["input_ids"],
+                    attention_mask=batch["attention_mask"],
+                    labels=batch["labels"],
+                    training=False
+                )
+                val_loss += outputs.loss.numpy()
+                num_val_batches += 1
+            except Exception as e:
+                logger.warning(f"Validation batch error: {e}. Skipping batch.")
+                continue
         
         avg_val_loss = val_loss / num_val_batches
         val_losses.append(avg_val_loss)
@@ -211,14 +226,21 @@ def train_model(train_dataset: Dataset, val_dataset: Dataset,
 def main():
     """Main function to run the model training pipeline."""
     try:
-        # Set memory growth for GPUs
+        # Set memory growth for GPUs and configure TensorFlow
         gpus = tf.config.list_physical_devices('GPU')
         if gpus:
-            for gpu in gpus:
-                tf.config.experimental.set_memory_growth(gpu, True)
-            logger.info(f"Using {len(gpus)} GPU(s)")
+            try:
+                for gpu in gpus:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+                logger.info(f"Using {len(gpus)} GPU(s)")
+            except RuntimeError as e:
+                logger.warning(f"GPU configuration error: {e}")
         else:
             logger.info("Using CPU")
+        
+        # Configure TensorFlow for stability
+        tf.config.optimizer.set_jit(False)
+        tf.config.experimental.enable_tensor_float_32_execution(False)
         
         # Create model directory
         os.makedirs(MODEL_DIR, exist_ok=True)

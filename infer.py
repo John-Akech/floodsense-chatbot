@@ -4,10 +4,18 @@ Handles inference using the fine-tuned T5 model with TensorFlow.
 """
 import os
 import logging
-import tensorflow as tf
 import numpy as np
 from typing import Optional, List
-from transformers import TFT5ForConditionalGeneration, T5Tokenizer
+
+try:
+    import tensorflow as tf
+    from transformers import TFT5ForConditionalGeneration, T5Tokenizer
+    TF_AVAILABLE = True
+except (ImportError, RuntimeError):
+    TF_AVAILABLE = False
+    tf = None
+    TFT5ForConditionalGeneration = None
+    T5Tokenizer = None
 
 # Configure logging
 logging.basicConfig(
@@ -21,7 +29,15 @@ FLOOD_KEYWORDS = [
     "flood", "floods", "flooding", "water level", "evacuation", "rain", "rainfall",
     "south sudan", "bentiu", "bor", "malakal", "juba", "tonj", "yei", "wau",
     "emergency", "preparation", "safety", "risk", "warning", "season", "climate",
-    "change", "warming", "shelter", "center", "centres", "global", "weather"
+    "change", "warming", "shelter", "center", "centres", "global", "weather",
+    "regional assessments", "safety guidelines", "climate information",
+    "hello", "hi", "hey", "greetings", "jonglei", "johnglei", "upper nile",
+    "unity state", "equatoria", "region", "county", "state", "payam", "boma",
+    "central equatoria", "eastern equatoria", "western equatoria", "northern bahr el ghazal",
+    "western bahr el ghazal", "lakes", "warrap", "aweil", "rumbek", "kuajok",
+    "torit", "kapoeta", "magwi", "pochalla", "pibor", "akobo", "nasir",
+    "melut", "renk", "kodok", "fashoda", "maban", "pariang", "rubkona",
+    "mayom", "koch", "leer", "panyijiar", "guit", "mayendit", "abiemnhom"
 ]
 
 class FloodRiskModel:
@@ -34,6 +50,11 @@ class FloodRiskModel:
         Args:
             model_path: Path to the fine-tuned model. If None, uses the base T5-small model.
         """
+        if not TF_AVAILABLE:
+            self.model = None
+            self.tokenizer = None
+            return
+            
         # Check for GPU availability
         gpus = tf.config.list_physical_devices('GPU')
         if gpus:
@@ -64,12 +85,12 @@ class FloodRiskModel:
             logger.info("Model loaded successfully")
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
-            # Fallback to base model
-            logger.info("Falling back to base T5-small model")
-            self.model = TFT5ForConditionalGeneration.from_pretrained("t5-small")
-            self.tokenizer = T5Tokenizer.from_pretrained("t5-small")
+            # Fallback to rule-based only
+            logger.info("Falling back to rule-based responses only")
+            self.model = None
+            self.tokenizer = None
     
-    def is_in_domain(self, query: str, threshold: float = 0.2) -> bool:
+    def is_in_domain(self, query: str, threshold: float = 0.1) -> bool:
         """
         Check if the query is within the flood risk domain.
         
@@ -81,15 +102,25 @@ class FloodRiskModel:
             Boolean indicating if query is in-domain
         """
         query_lower = query.lower()
-        words = set(query_lower.split())
         
-        # Check for keyword matches
-        keyword_matches = sum(1 for keyword in FLOOD_KEYWORDS if keyword.lower() in query_lower)
+        # Check for flood/climate keywords with any South Sudan location
+        flood_climate_words = ["climate change", "flood", "floods", "flooding", "rain", "rainfall", "water level"]
+        location_words = ["south sudan", "jonglei", "johnglei", "upper nile", "unity state", "equatoria", 
+                         "region", "county", "state", "payam", "boma", "central equatoria", "eastern equatoria", 
+                         "western equatoria", "northern bahr el ghazal", "western bahr el ghazal", "lakes", 
+                         "warrap", "bentiu", "bor", "malakal", "juba", "tonj", "yei", "wau", "aweil", 
+                         "rumbek", "kuajok", "torit", "kapoeta", "magwi", "pochalla", "pibor", "akobo", 
+                         "nasir", "melut", "renk", "kodok", "fashoda", "maban", "pariang", "rubkona", 
+                         "mayom", "koch", "leer", "panyijiar", "guit", "mayendit", "abiemnhom"]
         
-        # Calculate match ratio
-        match_ratio = keyword_matches / len(words) if words else 0
+        has_flood_climate = any(word in query_lower for word in flood_climate_words)
+        has_location = any(word in query_lower for word in location_words)
         
-        return match_ratio >= threshold
+        if has_flood_climate and has_location:
+            return True
+            
+        # Check for any other flood-related keywords
+        return any(keyword.lower() in query_lower for keyword in FLOOD_KEYWORDS)
     
     def generate_response(self, query: str, max_length: int = 150) -> str:
         """
@@ -111,6 +142,10 @@ class FloodRiskModel:
             rule_based_response = self.get_rule_based_response(query)
             if rule_based_response:
                 return rule_based_response
+            
+            # If TensorFlow model is not available, use fallback response
+            if not TF_AVAILABLE or self.model is None:
+                return "I can help with flood information in South Sudan. Please ask about specific regions (Bentiu, Bor, Malakal, Juba), flood preparation, safety measures, or seasonal patterns."
             
             # Format input as expected by T5
             input_text = f"question: {query}"
@@ -165,13 +200,97 @@ class FloodRiskModel:
         query = query.lower().strip()
         
         # Check for greetings
-        if any(greeting in query for greeting in ["hello", "hi", "hey", "greetings"]):
+        if query in ["hello", "hi", "hey", "greetings"] or any(greeting in query for greeting in ["hello", "hi", "hey", "greetings"]):
             return "Hello! I'm FloodSense, your assistant for flood information in South Sudan. How can I help you today?"
         
+        # Check for comprehensive information requests
+        if "regional assessments" in query:
+            return """FLOOD RISK ASSESSMENTS BY REGION:
+
+HIGH RISK REGIONS:
+• Bentiu: High flood risk, May-October season, affects ~120,000 people
+• Bor: High flood risk, May-October season, affects ~95,000 people  
+• Malakal: High flood risk, May-October season, affects ~110,000 people
+
+MEDIUM RISK REGIONS:
+• Juba: Medium flood risk, June-September season, affects ~75,000 people
+• Tonj: Medium flood risk, June-September season, affects ~45,000 people
+
+LOW RISK REGIONS:
+• Yei: Low flood risk, July-September season, affects ~30,000 people
+• Wau: Low flood risk, July-August season, affects ~25,000 people
+
+All regions experience seasonal flooding with varying intensity and duration."""
+        
+        if "safety guidelines" in query:
+            return """COMPREHENSIVE FLOOD SAFETY GUIDELINES:
+
+PREPARATION:
+• Stay informed about weather forecasts and warnings
+• Prepare emergency kit with food, water, medicine (3-day supply)
+• Know evacuation routes and safe shelter locations
+• Keep important documents in waterproof containers
+• Identify higher ground locations in your area
+
+DURING FLOODS:
+• Move to higher ground immediately when warnings issued
+• Never walk, swim, or drive through flood waters
+• Stay off bridges over fast-moving water
+• Evacuate if told to do so by authorities
+• Stay away from downed power lines
+• Disconnect electrical appliances if flooding imminent
+
+AFTER FLOODS:
+• Return home only when authorities say it's safe
+• Check for structural damage before entering buildings
+• Avoid contaminated flood water
+• Boil water before drinking if water supply affected
+• Report damaged utilities to authorities"""
+        
+        if "climate information" in query:
+            return """CLIMATE AND SEASONAL INFORMATION:
+
+FLOOD SEASONS:
+• Main season: May to October (peak: August-September)
+• Varies by region: Northern areas start earlier, Southern areas later
+• Duration and intensity vary annually
+
+RAINFALL PATTERNS:
+• Heavy seasonal rainfall during wet season
+• Unpredictable weather patterns due to climate change
+• CHIRPS satellite data helps monitor precipitation
+
+CLIMATE CHANGE IMPACTS:
+• Increased rainfall intensity and unpredictable patterns
+• More frequent extreme weather events
+• Changes in seasonal rainfall distribution
+• Rising temperatures increase evaporation and precipitation
+• Altered White Nile river flow patterns
+• Prolonged droughts followed by intense flooding
+• Environmental degradation reduces natural flood defenses
+• Makes flood prediction more difficult
+
+RIVER SYSTEMS:
+• White Nile overflow is major flood cause
+• Tributary systems contribute to regional flooding
+• Poor drainage infrastructure worsens urban flooding"""
+        
         # Check for region-specific questions
+        if any(word in query for word in ["jonglei", "johnglei"]):
+            return "Jonglei State has a Very High flood risk. The flood season runs from May to November, with severe flooding affecting over 800,000 people annually. The White Nile and Sobat River systems cause extensive seasonal flooding across the state."
+        
+        if "upper nile" in query:
+            return "Upper Nile State has a High flood risk. Seasonal flooding occurs from June to October, affecting approximately 600,000 people. The White Nile and tributaries cause widespread flooding in Malakal, Melut, and surrounding areas."
+        
+        if "unity state" in query:
+            return "Unity State has a Very High flood risk. Flooding occurs from May to November, affecting over 700,000 people. Bentiu and surrounding areas experience severe seasonal flooding from White Nile overflow."
+        
+        if any(word in query for word in ["equatoria", "central equatoria", "eastern equatoria", "western equatoria"]):
+            return "Equatoria regions have Medium to Low flood risk. Central Equatoria (including Juba) has medium risk from June-September. Eastern and Western Equatoria have lower risks with localized flooding during heavy rains."
+        
         regions = ["bentiu", "bor", "malakal", "juba", "tonj", "yei", "wau"]
         for region in regions:
-            if region in query and "risk" in query:
+            if region in query:
                 if region == "bentiu":
                     return "Bentiu has a High flood risk. The flood season typically runs from May to October, affecting approximately 120,000 people."
                 elif region == "bor":
@@ -210,7 +329,7 @@ Contact local authorities or humanitarian organizations for specific locations d
 These changes make flood prediction more difficult and increase vulnerability of communities."""
         
         # Check for preparation questions
-        if any(word in query for word in ["prepare", "preparation", "preparing", "ready"]) and any(word in query for word in ["flood", "floods", "flooding"]):
+        if any(word in query for word in ["prepare", "preparation", "preparing", "ready"]):
             return """To prepare for floods:
 1) Stay informed about weather forecasts and warnings
 2) Prepare an emergency kit with food, water, and medicine
