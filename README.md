@@ -17,7 +17,7 @@ This chatbot provides detailed information for:
 
 ## Advanced Features
 
-### Professional UI Design
+### UI Design
 - **Climate-Themed Interface**: Professional blue and red color scheme representing water/climate and risk/danger
 - **ChatGPT-Style Experience**: Modern, clean interface with smooth interactions
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
