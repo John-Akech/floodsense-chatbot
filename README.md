@@ -1,4 +1,4 @@
-# FloodSense: South Sudan - Climate & Flood Risk Chatbot
+# FloodSense: South Sudan Climate & Flood Risk Chatbot
 
 A professional domain-specific chatbot providing comprehensive flood risk and climate change information for all regions of South Sudan, built with advanced AI and professional UI design.
 
