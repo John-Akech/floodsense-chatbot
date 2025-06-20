@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 Note: This project requires Python 3.8+ and TensorFlow 2.12.0.
 
-3. **Run the application (auto-setup on first run)**
+3. **Run the application files step by step or (auto-setup on first run with streamlit)**
 
 streamlit run app.py
 
@@ -146,7 +146,6 @@ python evaluate_model.py
 
 # Test model responses
 python test_model.py
-```
 
 ### Important Notes
 - **First run takes 10-15 minutes** for model training
@@ -175,7 +174,6 @@ floodrisk_chatbot/
 ├── train_model.py       # Model training script
 ├── requirements.txt     # Project dependencies
 └── README.md            # Project documentation
-```
 
 ## Example Conversations
 
