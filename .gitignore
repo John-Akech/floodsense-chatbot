@@ -1,9 +1,7 @@
 # Model files (too large for GitHub)
-models/
 *.h5
 *.bin
 *.safetensors
-checkpoint-*
 
 # Data files
 data/
