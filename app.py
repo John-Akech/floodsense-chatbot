@@ -9,14 +9,15 @@ import datetime
 from infer import generate_response
 
 def apply_custom_css():
-    """Apply custom CSS for ChatGPT-like interface."""
+    """Apply custom CSS for modern professional interface."""
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     .stApp {
-        background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        background: white;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #1f2937;
     }
     
     #MainMenu {visibility: hidden;}
@@ -25,125 +26,176 @@ def apply_custom_css():
     .stDeployButton {display: none;}
     
     .main .block-container {
-        max-width: 900px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 2rem 1rem;
-        background: rgba(255,255,255,0.98);
-        border-radius: 16px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(59, 130, 246, 0.1);
+        padding: 2rem 1.5rem;
+        background: white;
     }
     
     .message-container {
-        margin: 1.5rem 0;
-        padding: 1.5rem;
-        border-radius: 12px;
-        animation: fadeIn 0.3s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        margin: 2rem 0;
+        padding: 1.5rem 2rem;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        max-width: 80%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     
     .user-message {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        color: white;
-        margin-left: 3rem;
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-        border-left: 4px solid #60a5fa;
+        background: #f8fafc;
+        color: #1f2937;
+        margin-left: auto;
+        margin-right: 0;
+        border-left: 4px solid #3b82f6;
+        text-align: left;
     }
     
     .assistant-message {
-        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-        color: white;
-        margin-right: 3rem;
-        box-shadow: 0 8px 25px rgba(220, 38, 38, 0.25);
-        border-left: 4px solid #f87171;
+        background: #f9fafb;
+        color: #1f2937;
+        margin-left: 0;
+        margin-right: auto;
+        border-left: 4px solid #10b981;
+        text-align: left;
     }
     
     .message-text {
-        line-height: 1.7;
-        font-size: 16px;
-        font-weight: 500;
+        line-height: 1.6;
+        font-size: 15px;
+        color: #1f2937;
     }
     
     .welcome-message {
         text-align: center;
-        padding: 3rem;
-        color: #1e40af;
+        padding: 5rem 3rem;
+        color: #1f2937;
+        margin: 3rem 0;
     }
     
     .welcome-title {
         font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: #1e40af;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        color: #1f2937;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
     }
     
     .welcome-subtitle {
-        font-size: 1.3rem;
-        font-weight: 500;
-        margin-bottom: 2rem;
-        color: #dc2626;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        color: #6b7280;
+        line-height: 1.5;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .sidebar-content {
-        background: rgba(255,255,255,0.95);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        border: 1px solid rgba(59, 130, 246, 0.1);
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     
     .sidebar-title {
-        color: #1e40af;
-        font-weight: 700;
+        color: #1f2937;
+        font-weight: 800;
         font-size: 1.4rem;
+        margin-bottom: 0.5rem;
     }
     
     .sidebar-subtitle {
-        color: #dc2626;
-        font-weight: 500;
+        color: #6b7280;
+        font-weight: 400;
+        font-size: 0.9rem;
+        line-height: 1.4;
     }
     
     .stButton > button {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 8px !important;
-        padding: 0.75rem 1.5rem !important;
-        font-weight: 600 !important;
+        background: white !important;
+        color: #1f2937 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 12px !important;
+        padding: 1rem 1.5rem !important;
+        font-weight: 500 !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+        width: 100% !important;
+        margin-bottom: 0.75rem !important;
+        font-size: 14px !important;
+        text-align: left !important;
     }
     
     .stButton > button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+        background: #f8fafc !important;
+        border-color: #3b82f6 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
     }
     
     .stMetric {
-        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%) !important;
-        color: white !important;
-        border-radius: 8px !important;
-        padding: 1rem !important;
-        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3) !important;
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 6px !important;
+        padding: 0.75rem !important;
     }
     
     .stMetric > div {
-        color: white !important;
-        font-weight: 600 !important;
+        color: #1f2937 !important;
+        font-weight: 500 !important;
     }
     
     .stSelectbox > div > div {
-        background: rgba(255,255,255,0.95) !important;
-        border: 2px solid #e5e7eb !important;
-        border-radius: 8px !important;
+        background: white !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 6px !important;
+        color: #1f2937 !important;
+    }
+    
+    /* All text elements */
+    .stMarkdown, .stText, p, div {
+        color: #1f2937 !important;
+    }
+    
+    /* Sidebar styling */
+    .stSidebar {
+        background: #f8fafc !important;
+        padding: 1.5rem !important;
+    }
+    
+    .stSidebar .stMarkdown {
+        color: #1f2937 !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .stSidebar hr {
+        margin: 2rem 0 !important;
+        border-color: #e5e7eb !important;
+    }
+    
+    /* Chat messages container */
+    .chat-messages {
+        padding: 2rem 0;
+        margin-bottom: 3rem;
+    }
+    
+    /* Professional footer */
+    .footer {
+        text-align: center;
+        padding: 2rem 0;
+        color: #6b7280;
+        font-size: 12px;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 3rem;
+    }
+    
+    /* Loading spinner customization */
+    .stSpinner {
+        text-align: center;
+        color: #3b82f6 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -191,10 +243,15 @@ def clear_all_history():
 def main():
     """Main application entry point."""
     st.set_page_config(
-        page_title="FloodSense: South Sudan",
-        page_icon="F",
+        page_title="FloodSense - Climate & Flood Risk Assistant",
+        page_icon="🌊",
         layout="wide",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="expanded",
+        menu_items={
+            'Get Help': None,
+            'Report a bug': None,
+            'About': "FloodSense - AI Assistant for Flood Risk & Climate Information in South Sudan"
+        }
     )
     
     # Initialize session state first
@@ -222,7 +279,7 @@ def main():
         if st.button("+ New Conversation"):
             save_chat_history()
             st.session_state.messages = []
-            st.experimental_rerun()
+            st.rerun()
         
         # Chat history section
         st.markdown("---")
@@ -235,7 +292,7 @@ def main():
                     if st.button(f"{chat['title']}", key=f"load_{i}"):
                         save_chat_history()
                         st.session_state.messages = chat["messages"].copy()
-                        st.experimental_rerun()
+                        st.rerun()
                 with col2:
                     if st.button("Delete", key=f"delete_{i}"):
                         st.session_state.chat_history.pop(i)
@@ -244,18 +301,18 @@ def main():
                                 json.dump(st.session_state.chat_history, f, indent=2)
                         except:
                             pass
-                        st.experimental_rerun()
+                        st.rerun()
             
             if st.button("Clear All History"):
                 clear_all_history()
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.write("No chat history")
         
         # Clear current chat button
         if st.button("Clear Current Chat"):
             st.session_state.messages = []
-            st.experimental_rerun()
+            st.rerun()
         
         st.markdown("---")
         st.markdown("**Quick Questions**")
@@ -317,7 +374,7 @@ def main():
                 st.session_state.messages.append({"role": "user", "content": selected_question})
                 response = generate_response(selected_question)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-                st.experimental_rerun()
+                st.rerun()
         
         st.markdown("---")
         st.markdown("**Statistics**")
@@ -341,7 +398,7 @@ def main():
             st.session_state.messages.append({"role": "user", "content": question})
             response = generate_response(question)
             st.session_state.messages.append({"role": "assistant", "content": response})
-            st.experimental_rerun()
+            st.rerun()
         
         if st.button("Safety Guidelines", key="sidebar_safety"):
             question = "Safety Guidelines"
@@ -350,7 +407,7 @@ def main():
             st.session_state.messages.append({"role": "user", "content": question})
             response = generate_response(question)
             st.session_state.messages.append({"role": "assistant", "content": response})
-            st.experimental_rerun()
+            st.rerun()
         
         if st.button("Climate Information", key="sidebar_climate"):
             question = "Climate Information"
@@ -359,15 +416,16 @@ def main():
             st.session_state.messages.append({"role": "user", "content": question})
             response = generate_response(question)
             st.session_state.messages.append({"role": "assistant", "content": response})
-            st.experimental_rerun()
+            st.rerun()
     
     # Main chat area
     if len(st.session_state.messages) == 0:
         st.markdown("""
         <div class="welcome-message">
             <div class="welcome-title">FloodSense</div>
-            <div class="welcome-subtitle">AI Assistant for Flood Risk Information in South Sudan</div>
+            <div class="welcome-subtitle">AI Assistant for Flood Risk & Climate Information in South Sudan</div>
             <div class="welcome-examples">
+                <p style="color: #6b7280; font-size: 14px; margin-top: 2rem;">Ask about flood risks, climate impacts, safety guidelines, or regional assessments for any location in South Sudan</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -388,90 +446,107 @@ def main():
                 ''', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # Premium input design
+    # Chat input form with Enter key support
     with st.form(key="chat_form", clear_on_submit=True):
-        prompt = st.text_input(
-            "Input",
-            placeholder="Ask FloodSense anything about South Sudan floods...",
-            label_visibility="collapsed"
-        )
-        submitted = st.form_submit_button("Send")
-        
-    # Professional input CSS with Enter key support
+        col1, col2 = st.columns([6, 1])
+        with col1:
+            prompt = st.text_input(
+                "Input",
+                placeholder="Ask FloodSense anything about South Sudan floods...",
+                label_visibility="collapsed",
+                key="user_input"
+            )
+        with col2:
+            submitted = st.form_submit_button("Send")
+    
+    # Input CSS styling
     st.markdown("""
     <style>
     .stTextInput input {
-        background: rgba(255,255,255,0.98) !important;
-        border: 2px solid #e5e7eb !important;
-        border-radius: 12px !important;
-        padding: 16px 20px !important;
+        background: white !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 16px !important;
+        padding: 16px 24px !important;
         font-size: 16px !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
         color: #1f2937 !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
         transition: all 0.3s ease !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
     }
     
     .stTextInput input:focus {
-        background: rgba(255,255,255,1) !important;
+        background: white !important;
         border: 2px solid #3b82f6 !important;
         outline: none !important;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15), 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 4px 16px rgba(0,0,0,0.08) !important;
+        transform: translateY(-1px) !important;
     }
     
     .stTextInput input::placeholder {
-        color: #6b7280 !important;
-        font-weight: 500 !important;
+        color: #9ca3af !important;
+        font-weight: 400 !important;
     }
     
-    .stForm button[type="submit"] {
-        position: absolute;
-        left: -9999px;
-        width: 1px;
-        height: 1px;
+    .stButton[data-testid="baseButton-secondary"] > button {
+        background: #3b82f6 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 16px !important;
+        padding: 16px 24px !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+    }
+    
+    .stButton[data-testid="baseButton-secondary"] > button:hover {
+        background: #2563eb !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
     }
     
     .stForm {
-        position: sticky;
-        bottom: 0;
-        background: rgba(255,255,255,0.98);
-        padding: 20px 0;
-        border-top: 2px solid #e5e7eb;
-        margin-top: 30px;
-        border-radius: 12px 12px 0 0;
+        background: white !important;
+        border-top: 1px solid #e5e7eb !important;
+        padding: 2rem 0 !important;
+        margin-top: 3rem !important;
+        position: sticky !important;
+        bottom: 0 !important;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.05) !important;
+    }
+    
+    .stForm > div {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 0 1.5rem !important;
     }
     </style>
-    
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('[data-testid="stForm"]');
-        if (form) {
-            const input = form.querySelector('input');
-            if (input) {
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        const submitBtn = form.querySelector('button[type="submit"]');
-                        if (submitBtn) {
-                            submitBtn.click();
-                        }
-                    }
-                });
-            }
-        }
-    });
-    </script>
     """, unsafe_allow_html=True)
     
     # Process input
     if submitted and prompt:
         st.session_state.messages.append({"role": "user", "content": prompt})
         
-        with st.spinner("Thinking..."):
-            response = generate_response(prompt)
+        with st.spinner("🤖 FloodSense is analyzing your question..."):
+            try:
+                response = generate_response(prompt)
+                if not response or response.strip() == "":
+                    response = "I apologize, but I couldn't generate a proper response. Please try rephrasing your question about flood risks or climate information in South Sudan."
+            except Exception as e:
+                response = f"I encountered an error while processing your question. Please try again or contact support if the issue persists."
+                st.error(f"Error: {str(e)}")
         
         st.session_state.messages.append({"role": "assistant", "content": response})
-        st.experimental_rerun()
+        st.rerun()
+    
+    # Footer
+    st.markdown("""
+    <div class="footer">
+        <p><strong>FloodSense</strong> - Climate & Flood Risk Information System for South Sudan</p>
+        <p>Providing comprehensive flood risk assessments, climate change information, and emergency preparedness guidance</p>
+        <p>© 2025 FloodSense Chatbot | Built with advanced AI for climate resilience</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
