@@ -26,19 +26,18 @@ def apply_custom_css():
     .stDeployButton {display: none;}
     
     .main .block-container {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
         background: white;
     }
     
     .message-container {
-        margin: 2rem 0;
-        padding: 1.5rem 2rem;
-        border-radius: 16px;
+        margin: 1.5rem 0;
+        padding: 1.25rem 1.5rem;
+        border-radius: 12px;
         border: 1px solid #e5e7eb;
-        max-width: 80%;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        max-width: 85%;
     }
     
     .user-message {
@@ -47,7 +46,6 @@ def apply_custom_css():
         margin-left: auto;
         margin-right: 0;
         border-left: 4px solid #3b82f6;
-        text-align: left;
     }
     
     .assistant-message {
@@ -56,7 +54,6 @@ def apply_custom_css():
         margin-left: 0;
         margin-right: auto;
         border-left: 4px solid #10b981;
-        text-align: left;
     }
     
     .message-text {
@@ -67,73 +64,63 @@ def apply_custom_css():
     
     .welcome-message {
         text-align: center;
-        padding: 5rem 3rem;
+        padding: 4rem 2rem;
         color: #1f2937;
-        margin: 3rem 0;
+        margin: 2rem 0;
     }
     
     .welcome-title {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 2rem;
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
         color: #1f2937;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
+        letter-spacing: -0.025em;
     }
     
     .welcome-subtitle {
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         font-weight: 400;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         color: #6b7280;
-        line-height: 1.5;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+        line-height: 1.6;
     }
     
     .sidebar-content {
         background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 2rem;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
         border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     
     .sidebar-title {
         color: #1f2937;
-        font-weight: 800;
-        font-size: 1.4rem;
-        margin-bottom: 0.5rem;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
     
     .sidebar-subtitle {
         color: #6b7280;
         font-weight: 400;
-        font-size: 0.9rem;
-        line-height: 1.4;
     }
     
     .stButton > button {
         background: white !important;
         color: #1f2937 !important;
         border: 1px solid #e5e7eb !important;
-        border-radius: 12px !important;
-        padding: 1rem 1.5rem !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1.25rem !important;
         font-weight: 500 !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.2s ease !important;
         width: 100% !important;
-        margin-bottom: 0.75rem !important;
-        font-size: 14px !important;
-        text-align: left !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .stButton > button:hover {
         background: #f8fafc !important;
-        border-color: #3b82f6 !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        border-color: #d1d5db !important;
+        transform: translateY(-1px) !important;
     }
     
     .stMetric {
@@ -162,24 +149,19 @@ def apply_custom_css():
     
     /* Sidebar styling */
     .stSidebar {
-        background: #f8fafc !important;
-        padding: 1.5rem !important;
+        background: #fafafa !important;
+        padding: 1rem !important;
     }
     
     .stSidebar .stMarkdown {
         color: #1f2937 !important;
-        margin-bottom: 1.5rem !important;
-    }
-    
-    .stSidebar hr {
-        margin: 2rem 0 !important;
-        border-color: #e5e7eb !important;
+        margin-bottom: 1rem !important;
     }
     
     /* Chat messages container */
     .chat-messages {
-        padding: 2rem 0;
-        margin-bottom: 3rem;
+        padding: 1rem 0;
+        margin-bottom: 2rem;
     }
     
     /* Professional footer */
@@ -243,14 +225,14 @@ def clear_all_history():
 def main():
     """Main application entry point."""
     st.set_page_config(
-        page_title="FloodSense - Climate & Flood Risk Assistant",
-        page_icon="🌊",
+        page_title="FloodSense - Professional Climate & Flood Risk Assistant",
+        page_icon="",
         layout="wide",
         initial_sidebar_state="expanded",
         menu_items={
             'Get Help': None,
             'Report a bug': None,
-            'About': "FloodSense - AI Assistant for Flood Risk & Climate Information in South Sudan"
+            'About': "FloodSense - Professional AI Assistant for Flood Risk & Climate Information in South Sudan"
         }
     )
     
@@ -423,7 +405,7 @@ def main():
         st.markdown("""
         <div class="welcome-message">
             <div class="welcome-title">FloodSense</div>
-            <div class="welcome-subtitle">AI Assistant for Flood Risk & Climate Information in South Sudan</div>
+            <div class="welcome-subtitle">Professional AI Assistant for Flood Risk & Climate Information in South Sudan</div>
             <div class="welcome-examples">
                 <p style="color: #6b7280; font-size: 14px; margin-top: 2rem;">Ask about flood risks, climate impacts, safety guidelines, or regional assessments for any location in South Sudan</p>
             </div>
@@ -459,27 +441,25 @@ def main():
         with col2:
             submitted = st.form_submit_button("Send")
     
-    # Input CSS styling
+    # Professional input CSS styling
     st.markdown("""
     <style>
     .stTextInput input {
         background: white !important;
         border: 1px solid #d1d5db !important;
-        border-radius: 16px !important;
-        padding: 16px 24px !important;
-        font-size: 16px !important;
+        border-radius: 8px !important;
+        padding: 12px 16px !important;
+        font-size: 15px !important;
         font-weight: 400 !important;
         color: #1f2937 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+        transition: all 0.2s ease !important;
     }
     
     .stTextInput input:focus {
         background: white !important;
         border: 2px solid #3b82f6 !important;
         outline: none !important;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 4px 16px rgba(0,0,0,0.08) !important;
-        transform: translateY(-1px) !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
     }
     
     .stTextInput input::placeholder {
@@ -487,38 +467,13 @@ def main():
         font-weight: 400 !important;
     }
     
-    .stButton[data-testid="baseButton-secondary"] > button {
-        background: #3b82f6 !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 16px !important;
-        padding: 16px 24px !important;
-        font-weight: 600 !important;
-        font-size: 16px !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-    }
-    
-    .stButton[data-testid="baseButton-secondary"] > button:hover {
-        background: #2563eb !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
-    }
-    
     .stForm {
         background: white !important;
         border-top: 1px solid #e5e7eb !important;
-        padding: 2rem 0 !important;
-        margin-top: 3rem !important;
+        padding: 1.5rem 0 !important;
+        margin-top: 2rem !important;
         position: sticky !important;
         bottom: 0 !important;
-        box-shadow: 0 -4px 12px rgba(0,0,0,0.05) !important;
-    }
-    
-    .stForm > div {
-        max-width: 1200px !important;
-        margin: 0 auto !important;
-        padding: 0 1.5rem !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -539,7 +494,7 @@ def main():
         st.session_state.messages.append({"role": "assistant", "content": response})
         st.rerun()
     
-    # Footer
+    # Professional footer
     st.markdown("""
     <div class="footer">
         <p><strong>FloodSense</strong> - Climate & Flood Risk Information System for South Sudan</p>
