@@ -2,6 +2,13 @@
 
 An AI-powered chatbot providing flood risk and climate information for South Sudan regions using rule-based responses and T5 transformer model.
 
+Demo Video
+Watch the project demo here:
+[FloodSense Chatbot Demo](https://youtu.be/bETF4Fg79gM)
+
+GitHub Repository
+Access the full codebase:
+https://github.com/John-Akech/floodsense-chatbot
 ## Dataset
 
 The chatbot uses a comprehensive dataset covering:
@@ -28,7 +35,7 @@ The chatbot uses a comprehensive dataset covering:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/username/floodsense-chatbot.git
+git clone https://github.com/John-Akech/floodsense-chatbot.git
 cd floodsense-chatbot
 ```
 
